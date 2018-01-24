@@ -1,0 +1,47 @@
+.menu {
+    margin: 0;
+    padding: 0;
+    text-align: center;  
+} 
+
+li{
+    text-align: center;
+    min-width: 100px;
+}
+
+.main-menu > li{
+    display: inline-block;
+}
+
+.sec-menu {
+    display:none;
+    position: absolute;
+}
+
+.main-menu > li:hover{
+    background-color: lightsteelblue;
+}
+
+.main-menu > li:hover .sec-menu {
+    display:block;
+    
+    background-color: lightsteelblue;
+    list-style-type:none;
+}
+
+.sec-menu > li:hover{
+    background-color: gold;
+}
+
+#cur-page{
+    font-weight: bold;
+}
+
+.body-content{
+    margin-top: 100px;
+    text-align: center;
+}
+
+.body-content div{
+    margin-top: 20px;
+}

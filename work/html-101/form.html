@@ -3,7 +3,6 @@
 <html>
     <head>
         <link rel="stylesheet" href="shared.css">
-        <link rel="stylesheet" href="images.css">
     </head>
 
     <body>
@@ -12,8 +11,8 @@
                     <div class="menu-title">This Site</div>
                     <ul class="sec-menu menu">
                         <li><a href="index.html">Home</a></li>
-                        <li  id="cur-page">Images</li>
-                        <li><a href="form.html">Form</a></li>
+                        <li><a href="images.html">Images</a></li>
+                        <li id="cur-page">Form</li>
                         <li><a href="links.html">Links</a></li>
                     </ul>
                 </li>
@@ -30,7 +29,21 @@
             </ul>
 
         <div class="body-content">
-            <img src="cat1.jpg" alt="dancer1"><img src="cat2.jpg" alt="singer"><img src="cat3.jpg" alt="dancer2">
+                <form action="index.html" method="GET">
+                    <div><input name="name" placeholder="your name here"/></div>
+                    <div>my fav page is <select name="drop">
+                        <option value="index">Home</option>
+                        <option value="images">Images</option>
+                        <option value="form">Form</option>
+                        <option value="links">Links</option>
+                    </select>
+                    </div>
+
+                    <div class="button-panel">
+                        <button type="submit">submit and back to index</button>
+                        <button type="reset">Reset</button>
+                    </div>
+                </form>
         </div>
 
     </body>
