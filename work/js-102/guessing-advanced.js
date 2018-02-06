@@ -56,17 +56,7 @@ function common(word, guess){
 }
 
 function updateCandidates (guess, arr, similar){   // remove last guess and impossible candidates
-
-  let newLen=0;
-  for (let i in arr){
-    if (guess===arr[i]) continue;
-
-    if ( common(guess , arr[i]) === similar ){
-      arr[newLen++]=arr[i];
-    }
-  }
-  arr.length=newLen;
-  return arr;
+  wordInfo.magic=arr.filter( word => common(word, guess) === similar && word!==guess  );
 }
 
 // YOU MAY ADD YOUR OWN FUNCTIONS (ONLY FUNCTIONS) ABOVE THIS
