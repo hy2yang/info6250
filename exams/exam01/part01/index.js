@@ -22,24 +22,26 @@ function reset() {
     console.log('the secret is ' + secret);
     changeButtonGuess();    
     resetInput();
-    document.getElementById('num-try').innerHTML=0;
+    document.getElementById('num-try').innerHTML='Number of guesses: 0';
     document.getElementById('list').innerHTML='';
 }
 
 function validateInput(){
     if (document.getElementsByClassName('user-guess')[0].value.match('[a-zA-Z]{5}')){
         document.getElementsByClassName('mighty-button')[0].disabled = false;
-    }    
+    } 
+    else document.getElementsByClassName('mighty-button')[0].disabled = true;   
 }
 
 function submit(){
     let guess = document.getElementsByClassName('user-guess')[0].value.toUpperCase();
     document.getElementsByClassName('user-guess')[0].value='';
+    document.getElementsByClassName('mighty-button')[0].disabled = true;
     handleGuess(guess);
 }
 
 function handleGuess(input) {
-    document.getElementById('num-try').innerHTML= ++numTry;    
+    document.getElementById('num-try').innerHTML= `Number of guesses: ${++numTry}`;    
     let i=common(input,secret); 
     history.push({
         guess:input,
@@ -52,7 +54,10 @@ function handleGuess(input) {
 
 function updateList(){
     let last=history[history.length-1];
-    document.getElementById('list').innerHTML+=`<li >Guess No.${history.length} is ${last.guess} with ${last.common} common letters</li>`;
+    document.getElementById('list').innerHTML+=
+    `<tr><td>${history.length}</td>
+    <td>${last.guess}</td>
+    <td>${last.common}</td></tr>`;
 }
 
 function resetInput(){
@@ -60,7 +65,7 @@ function resetInput(){
     //let element=document.querySelector('.user-guess');
     element.disabled = false;
     element.value='';
-    element.placeholder= 'input guess here (5 letters)';
+    element.placeholder= 'input guess here (5 letters case insensitive)';
 }
 
 function endGame(){
@@ -68,6 +73,7 @@ function endGame(){
     let element=document.getElementsByClassName('user-guess')[0];
     element.placeholder= 'You won!';
     element.disabled = true;
+    document.getElementById('num-try').innerHTML+='<p>YOU WON!</p>';
 }
 
 function changeButtonGuess(){

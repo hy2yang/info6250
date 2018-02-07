@@ -1,0 +1,30 @@
+*{
+    text-align: center;
+    margin: 5px;
+}
+
+.user-guess{
+    min-width: 300px;
+}
+
+#num-try{
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+table{    
+    margin: auto;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+table th,td{
+    padding: 5px;
+    border: 1px solid black;
+    min-width: 90px;
+}
+
+li{
+    display: block;
+    min-width: 100px;
+}

@@ -5,18 +5,27 @@
     </head>
     
     <body>
-        <div class="input">
-            <input class="user-guess" type="text" maxlength="5" placeholder="input guess here (5 letters)">
+        <div>
+            <input class="user-guess" type="text" maxlength="5" placeholder="input guess here (5 letters case insensitive)">            
+        </div>
+        <div>
             <button class="mighty-button" disabled="true">Guess!</button>
+        </div>        
+        <div id="num-try">
+            <p>Number of guesses: 0</p>
         </div>
+
+        <table>
+            <thead>
+                <th>#</th>
+                <th>Guess</th>
+                <th>common</th>
+            </thead> 
+            <tbody id="list">
+
+            </tbody>            
+        </table>
         
-        <div class="hitory">
-            <div id="num-try">0</div>
-            <ul id="list">
-                
-            </ul>
-        </div>
-    
         <script src="index.js"></script>
 
     </body>
