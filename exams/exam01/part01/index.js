@@ -2,25 +2,17 @@ let numTry=0;
 let secret='';
 let history=[];
 
-document.querySelector('.user-guess').addEventListener('keyup', validateInput);
+addInputListener();
 reset();
 
-function changeButtonGuess(){   
-    let button= document.querySelector('.mighty-button');
-    button.removeEventListener('click', reset);
-    button.innerHTML='Guess!';
-    button.addEventListener('click', submit);
-}
-
-function changeButtonReset(){
-    let button= document.querySelector('.mighty-button');
-    button.removeEventListener('click', submit);
-    button.innerHTML='Reset Game';
-    button.addEventListener('click', reset);
-}
-
-function endGame(){
-    changeButtonReset();
+function addInputListener(){
+    let element=document.getElementsByClassName('user-guess')[0];
+    //let element=document.querySelector('.user-guess');
+    element.addEventListener('keyup', validateInput);
+    element.addEventListener('keydown', function (key){
+        if (key.keyCode===13) document.getElementsByClassName('mighty-button')[0].click();
+        }
+    );
 }
 
 function reset() {
@@ -29,37 +21,72 @@ function reset() {
     history.length=0;
     console.log('the secret is ' + secret);
     changeButtonGuess();    
+    resetInput();
+    document.getElementById('num-try').innerHTML=0;
+    document.getElementById('list').innerHTML='';
 }
 
 function validateInput(){
-    if (document.querySelector('.user-guess').value.match('[a-zA-Z]{5}')){
-        console.log(document.querySelector('.user-guess').value);
-        document.querySelector('.mighty-button').disabled = false;
-    }
-    else {
-        document.querySelector('.mighty-button').disabled = true;
-    }
+    if (document.getElementsByClassName('user-guess')[0].value.match('[a-zA-Z]{5}')){
+        document.getElementsByClassName('mighty-button')[0].disabled = false;
+    }    
 }
 
 function submit(){
-    let guess = document.querySelector('.user-guess').value.toUpperCase();
-    document.querySelector('.user-guess').value='';
+    let guess = document.getElementsByClassName('user-guess')[0].value.toUpperCase();
+    document.getElementsByClassName('user-guess')[0].value='';
     handleGuess(guess);
 }
 
 function handleGuess(input) {
-    ++numTry;
+    document.getElementById('num-try').innerHTML= ++numTry;    
     let i=common(input,secret); 
     history.push({
-        number:numTry,
         guess:input,
         common: i,
         correct: input===secret
     });  
-
+    updateList();
     if (input===secret) endGame();
 }
 
+function updateList(){
+    let last=history[history.length-1];
+    document.getElementById('list').innerHTML+=`<li >Guess No.${history.length} is ${last.guess} with ${last.common} common letters</li>`;
+}
+
+function resetInput(){
+    let element=document.getElementsByClassName('user-guess')[0];
+    //let element=document.querySelector('.user-guess');
+    element.disabled = false;
+    element.value='';
+    element.placeholder= 'input guess here (5 letters)';
+}
+
+function endGame(){
+    changeButtonReset();
+    let element=document.getElementsByClassName('user-guess')[0];
+    element.placeholder= 'You won!';
+    element.disabled = true;
+}
+
+function changeButtonGuess(){
+    let button = document.getElementsByClassName('mighty-button')[0]; 
+    //let button= document.querySelector('.mighty-button');
+    button.removeEventListener('click', reset);
+    button.innerHTML='Guess!';
+    button.addEventListener('click', submit);
+    button.disabled = true;
+}
+
+function changeButtonReset(){
+    let button = document.getElementsByClassName('mighty-button')[0]; 
+    //let button= document.querySelector('.mighty-button');
+    button.removeEventListener('click', submit);
+    button.innerHTML='Reset Game';
+    button.addEventListener('click', reset);
+    button.disabled = false;
+}
 
 function common(word, guess) {
     let res = 0;
