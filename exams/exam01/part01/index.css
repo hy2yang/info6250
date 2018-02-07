@@ -3,6 +3,10 @@
     margin: 5px;
 }
 
+.mighty-button{
+    width: 95px;
+}
+
 .user-guess{
     min-width: 300px;
 }
