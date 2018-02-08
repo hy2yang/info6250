@@ -1,3 +1,4 @@
+( () => {
 let numTry=0;
 let secret='';
 let history=[];
@@ -257,3 +258,5 @@ function wordlist() {
     fares hoped safer marsh ricky theta stake arbor
     `.split(/ |\n/g).map(word => word.toUpperCase()).filter(word => word);
 }
+
+})();

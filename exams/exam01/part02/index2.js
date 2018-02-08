@@ -1,3 +1,5 @@
+( () => {
+
 let numTry;
 let computerSecret;
 let userSecret;
@@ -359,3 +361,5 @@ function wordlist() {
     fares hoped safer marsh ricky theta stake arbor
     `.split(/ |\n/g).map(word => word.toUpperCase()).filter(word => word);
 }
+
+})();
