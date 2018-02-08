@@ -80,7 +80,7 @@ function changeButtonGuess(){
     let button = document.getElementsByClassName('mighty-button')[0]; 
     //let button= document.querySelector('.mighty-button');
     button.removeEventListener('click', reset);
-    button.innerHTML='Guess!';
+    button.innerHTML='Guess';
     button.addEventListener('click', submit);
     button.disabled = true;
 }
@@ -89,7 +89,7 @@ function changeButtonReset(){
     let button = document.getElementsByClassName('mighty-button')[0]; 
     //let button= document.querySelector('.mighty-button');
     button.removeEventListener('click', submit);
-    button.innerHTML='Reset Game';
+    button.innerHTML='Reset';
     button.addEventListener('click', reset);
     button.disabled = false;
 }
