@@ -175,7 +175,7 @@ function resetInput(initialize){
 function changeButtonBegin(){
     let button = document.getElementsByClassName('mighty-button')[0]; 
     button.removeEventListener('click', reset);
-    button.innerHTML='Begin!';
+    button.innerHTML='Begin';
     button.addEventListener('click', submit);
     button.disabled = true;
 }
@@ -183,7 +183,7 @@ function changeButtonBegin(){
 function changeButtonGuess(){
     let button = document.getElementsByClassName('mighty-button')[0]; 
     button.removeEventListener('click', reset);
-    button.innerHTML='Guess!';
+    button.innerHTML='Guess';
     button.addEventListener('click', submit);
     button.disabled = true;
 }
@@ -191,7 +191,7 @@ function changeButtonGuess(){
 function changeButtonReset(){
     let button = document.getElementsByClassName('mighty-button')[0]; 
     button.removeEventListener('click', submit);
-    button.innerHTML='Reset Game';
+    button.innerHTML='Reset';
     button.addEventListener('click', reset);
     button.disabled = false;
 }
