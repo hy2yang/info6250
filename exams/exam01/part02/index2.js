@@ -1,8 +1,9 @@
 let numTry;
 let computerSecret;
 let userSecret;
-let UserHistory=[];
+let userHistory=[];
 let computerHistory=[];
+let candidates;
 const allWords=wordlist();
 
 addInputListener();
@@ -19,34 +20,56 @@ function addInputListener(){
 
 function reset() {
     numTry = 0;
-    computerSecret = random(allWords);
-    userSecret='';
-    UserHistory.length=0;
-    computerHistory.length=0;
+    resetUser();
+    resetComputer();
     console.log('computer chose secret ' + computerSecret);
     changeButtonBegin();    
     resetInput(true);
+    document.getElementsByClassName('status')[0].innerHTML='Enter a common 5 letter word for them to guess';
     document.getElementById('num-try').innerHTML='Number of guesses: 0';
-    document.getElementById('user-list').innerHTML='';
-    document.getElementById('computer-list').innerHTML='';
 }
 
-function validateInput(){    
-    let input=document.getElementsByClassName('user-guess')[0].value;
+function resetUser(){
+    userSecret='';
+    userHistory.length=0;
+    document.getElementById('user-list').innerHTML='<tr class="no-guess"><td colspan="3">No guesses made</td></tr>';
+}
+
+function resetComputer(){
+    candidates=allWords;
+    computerSecret = random(candidates);
+    computerHistory.length=0;
+    document.getElementById('computer-list').innerHTML='<tr class="no-guess"><td colspan="3">No guesses made</td></tr>';
+}
+
+function validateInput(){   
+    let element= document.getElementsByClassName('user-guess')[0];
+    let input=element.value;
+    let status=document.getElementsByClassName('status')[0];
     let button=document.getElementsByClassName('mighty-button')[0];
 
-    if (userSecret===''){              // still in begin phase, choosing secret
-        if (allWords.includes(input.toUpperCase())){
-            button.disabled = false;
-        } 
-        else button.disabled = true;
-
-    } else {
-        if (input.match('[a-zA-Z]{5}')) {
-            button.disabled = false;
-        }
-        else button.disabled = true;
-    }       
+    if (input.length<5) {
+        button.disabled = true;
+        element.classList.remove('red'); 
+        element.classList.remove('green');
+        status.innerHTML= userSecret===''? 'Enter a common 5 letter word for them to guess':'Enter a common 5 letter word to guess';   
+        status.classList.remove('flash-item');     
+        return;
+    }
+    
+    if (allWords.includes(input.toUpperCase())){  
+        element.classList.remove('red'); 
+        element.classList.add('green');             
+        button.disabled = false;
+    } 
+    else {
+        element.classList.remove('green');
+        element.classList.add('red');
+        status.innerHTML= userSecret===''? 'Unknown word.  Choose a different common 5 letter word for them to guess':'Unknown word.  Choose a different common 5 letter word to guess';
+        button.disabled = true;
+        status.classList.add('flash-item');
+    }    
+       
 }
 
 function submit(){
@@ -57,37 +80,78 @@ function submit(){
 }
 
 function userInput(input) {
-    if (userSecret===''){
+    if (userSecret === ''){
         userSecret=input;
         changeButtonGuess();
     }
     else{
         document.getElementById('num-try').innerHTML = `Number of guesses: ${++numTry}`;
         let i = common(input, computerSecret);
-        UserHistory.push({
+        userHistory.push({
             guess: input,
-            common: i,
-            correct: input === computerSecret
+            common: i            
         });
-        updateUserList();
+        updateList('user');
         if (input === computerSecret) endGame(true);
+        else computerGuess();
     }
     
 }
 
-function updateUserList(){
-    let last=UserHistory[UserHistory.length-1];
-    document.getElementById('user-list').innerHTML+=
-    `<tr><td>${UserHistory.length}</td>
-    <td>${last.guess}</td>
-    <td>${last.common}</td></tr>`;
+function updateList(target){
+    let element, last, len;
+    if (target === 'user'){
+        last=userHistory[userHistory.length-1];
+        element=document.getElementById('user-list');
+        len=userHistory.length;
+    }
+    else if (target === 'computer'){
+        last=computerHistory[computerHistory.length-1];
+        element=document.getElementById('computer-list');
+        len=computerHistory.length;
+    }
+
+    if (element && last && len){
+        if (numTry<2) element.innerHTML='';
+        element.innerHTML+=
+        `<tr><td>${len}</td>
+        <td>${last.guess}</td>
+        <td>${last.common}</td></tr>`;
+    }
 }
 
-function resetInput(initialize){
-    let element=document.getElementsByClassName('user-guess')[0];
-    element.disabled = false;
-    element.value='';
-    element.placeholder= initialize? 'input secret here (5 letters case insensitive)':'input guess here (5 letters case insensitive)';
+function computerGuess(){
+    let chosen=pickGuess(candidates, computerHistory);
+    document.getElementsByClassName('computer-guess')[0].value=chosen;
+    let i = common(chosen, userSecret);
+    computerHistory.push({
+        guess: chosen,
+        common: i            
+    });
+    updateList('computer');
+    if (chosen === userSecret) endGame(false);
+    else updateCandidates(chosen, i);
+}
+
+function pickGuess( candidates, history ) {
+    let guess, temp;
+    let min=5;
+    if (history.length !== 0){                        // choose one with least common letters of last guess
+      for (let i of candidates){
+        temp=common(i, history[history.length-1]);
+        if (temp<min){
+          guess=i;
+          min=temp;
+        }
+      }
+    }
+    else guess = random(candidates);  
+    return guess;
+}
+
+
+function updateCandidates (guess, similar){   // remove last guess and impossible candidates
+    candidates=candidates.filter( word => common(word, guess) === similar && word!==guess  );
 }
 
 function endGame(userWin){
@@ -95,7 +159,17 @@ function endGame(userWin){
     let element=document.getElementsByClassName('user-guess')[0];
     element.placeholder= userWin? 'You won!':'You lost';
     element.disabled = true;
-    document.getElementById('num-try').innerHTML+= userWin? `<p>Human wins in ${numTry} turns</p>`:`<p>Computer wins in ${numTry} turns</p>`;
+    let status=document.getElementsByClassName('status')[0];
+    status.innerHTML= userWin? `<p>Human wins in ${numTry} turns</p>`:`<p>Computer wins in ${numTry} turns</p>`;
+    status.classList.remove('flash-item');
+    status.classList.add('flash-item');   
+}
+
+function resetInput(initialize){
+    let element=document.getElementsByClassName('user-guess')[0];
+    element.disabled = false;
+    element.value='';
+    element.placeholder= initialize? 'input secret here (5 letters case insensitive)':'input guess here (5 letters case insensitive)';
 }
 
 function changeButtonBegin(){
