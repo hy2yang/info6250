@@ -1,0 +1,63 @@
+<html>
+
+    <head>    
+        <link rel="stylesheet" href="index2.css">    
+    </head>
+    
+    <body>
+        <div class="status">
+
+        </div>
+        <div class="outer-box">
+            <div class="user-box box">
+                <div>
+                    <input class="user-guess text-input" type="text" maxlength="5" placeholder="input secret here (5 letters case insensitive)">
+                </div>
+                <div>
+                    <button class="mighty-button" disabled="true">Begin!</button>
+                </div>
+            
+                <table>
+                    <thead>
+                        <th>#</th>
+                        <th>Guess</th>
+                        <th>common</th>
+                    </thead>
+                    <tbody id="user-list">
+            
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="center-box box">
+                <div id="num-try">
+                    <p>Number of guesses: 0</p>
+                </div>
+            </div>
+            
+            <div class="computer-box box">
+                <div>
+                    <input class="computer-guess text-input" type="text" maxlength="5" placeholder="I've chosen a secret">
+                </div>
+
+                <div><br /><br /></div>
+            
+                <table>
+                    <thead>
+                        <th>#</th>
+                        <th>Guess</th>
+                        <th>common</th>
+                    </thead>
+                    <tbody id="computer-list">
+            
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        
+        <script src="index2.js"></script>
+
+    </body>
+
+</html>
