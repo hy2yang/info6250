@@ -8,7 +8,7 @@ for (let i of guesses){
 function samePos(word, guess){
     let res = 0;
     
-    for (let i in word){
+    for (let i=0;i<word.length;++i){
         if (word[i] === guess[i]) ++res;
     }
     return res;
