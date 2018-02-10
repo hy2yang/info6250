@@ -11,7 +11,6 @@ li{
 
 .main-menu > li{
     display: inline-block;
-    background-color:  #C9DBF3;
 }
 
 .sec-menu {
@@ -21,18 +20,17 @@ li{
 
 .main-menu > li:hover{
     background-color: lightsteelblue;
-    box-shadow: 4px 4px 8px 1px rgb(150, 150, 150);
 }
 
 .main-menu > li:hover .sec-menu {
     display:block;
-    box-shadow: 4px 4px 8px 1px rgb(150, 150, 150);        
-    background-color: #C9DBF3;
+    
+    background-color: lightsteelblue;
     list-style-type:none;
 }
 
 .sec-menu > li:hover{
-    background-color: rgb(255, 254, 208);
+    background-color: gold;
 }
 
 #cur-page{
