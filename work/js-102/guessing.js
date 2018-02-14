@@ -37,6 +37,33 @@ console.log(`Found ${wordInfo.word} in ${history.count} turns`);
 
 // YOU MAY ADD YOUR OWN FUNCTIONS (ONLY FUNCTIONS) BELOW THIS
 
+function common(word, guess){
+  let res = 0;
+  const map={};
+
+  for (let i in word){
+      if (word[i] === guess[i]) ++res;
+      else{
+          if (!map[word[i]]) map[word[i]] = 0;        
+          if (!map[guess[i]]) map[guess[i]] = 0;
+
+          if (map[word[i]] < 0 ) ++res;
+          if (map[guess[i]] > 0) ++res;
+          ++map[word[i]];
+          --map[guess[i]];
+      }
+  }
+  return res;
+}
+
+function guessed (guess, resultList){
+  for (let result of resultList){
+    if (result.guess === guess ) return true;
+  }
+  return false;
+}
+
+
 // YOU MAY ADD YOUR OWN FUNCTIONS (ONLY FUNCTIONS) ABOVE THIS
 
 function thinkAbout( wordInfo ) {
@@ -55,7 +82,13 @@ function pickGuess( wordInfo, history ) {
   // along with any startup info that was stored in history.info
 
   // EDIT BELOW THIS
+  let guess;
 
+  do{
+    guess = random(wordInfo.allWords);
+  }  while ( guessed(guess, history.results) );
+
+  return guess
   // EDIT ABOVE THIS
 }
 
@@ -65,7 +98,13 @@ function compareLetters( guess, wordInfo ) {
   // You may add info in result beyond what is needed if you wish
 
   // EDIT BELOW THIS
+  let result={};
+  result.guess=guess;
+  result.similar= common (guess, wordInfo.word);
+  if ( guess === wordInfo.word) result.won = true;
+  else result.won = false;
 
+  return result;
   // EDIT ABOVE THIS
 }
 
