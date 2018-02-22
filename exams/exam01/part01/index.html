@@ -1,0 +1,33 @@
+<html>
+
+    <head>    
+        <link rel="stylesheet" href="index.css">    
+    </head>
+    
+    <body>
+        <div>
+            <input class="user-guess" type="text" maxlength="5" placeholder="input guess here (5 letters case insensitive)">            
+        </div>
+        <div>
+            <button class="mighty-button" disabled="true">Guess</button>
+        </div>        
+        <div id="num-try">
+            <p>Number of guesses: 0</p>
+        </div>
+
+        <table>
+            <thead>
+                <th>#</th>
+                <th>Guess</th>
+                <th>common</th>
+            </thead> 
+            <tbody id="list">
+
+            </tbody>            
+        </table>
+        
+        <script src="index.js"></script>
+
+    </body>
+
+</html>
