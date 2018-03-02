@@ -1,0 +1,10 @@
+* {
+    text-align: center;
+    margin-top:15px;
+    margin-bottom: 15px;
+}
+
+ol {
+    list-style-position: inside;
+    padding-left: 0;
+}
