@@ -5,7 +5,7 @@ import Input from './Input'
 import Banner from './Banner'
 import History from './History'
 
-class guess extends Component {
+class Guess extends Component {
 
     constructor(props) {
         super(props);
@@ -47,4 +47,4 @@ class guess extends Component {
     }
 }
 
-export default guess;
+export default Guess;
