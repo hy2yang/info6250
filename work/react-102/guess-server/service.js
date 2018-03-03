@@ -1,16 +1,70 @@
+import wordlist from './wordlist';
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
-const PORT = 3001;  
+function getSecretId(){
+    return Math.floor( Math.random() * wordlist.length );
+}
 
-const listCode = require('./listCode');
+function process ( guess, id ){
+    guess=guess.toUpperCase();
+    let id=+id;
+    let res = {};
 
-app.use( express.static('public') ); 
-app.use( bodyParser.json({ extended: true, type: '*/*' }) );
+    if (!checkId(id)){
+        res.error='id not valid';
+    }
 
+    if (!checkGuess(guess)){
+        if (res.error) res.error+=' and guess not valid';
+        else res.error='guess not valid';
+    }   
+    
+    res.guess=guess;
+    res.id=id;
 
-app.listen(PORT, () => {  
-  console.log(`Server listening at http://localhost:${PORT}`);
-  console.log('use Ctrl-C to stop this server');
-});
+    if (res.error) return res;
+
+    const word=wordlist[id];
+    let count=0;
+
+    res.won = (guess===word)? true:false;
+    if (res.won){
+        res.match=5;
+        return res;
+    }
+
+    const map={};  
+    for (let i=0;i<5;++i){
+        if (word[i] === guess[i]) ++count;
+        else{
+            if (!map[word[i]]) map[word[i]] = 0;        
+            if (!map[guess[i]]) map[guess[i]] = 0;
+  
+            if (map[word[i]] < 0 ) ++count;
+            if (map[guess[i]] > 0) ++count;
+            ++map[word[i]];
+            --map[guess[i]];
+        }
+    }
+    res.match=count;    
+    return res;
+}
+
+function checkGuess(guess){
+    if ( !guess || guess.length!==5) return false;
+    return true;
+}
+
+function checkId(id){
+    if ( +id<0 || +id>=wordlist.length ) return false;
+    return true;
+}
+
+function fullList(){
+    return wordlist;
+}
+
+module.exports={
+    getSecretId : getSecretId,
+    process : process,
+    fullList : fullList
+}
