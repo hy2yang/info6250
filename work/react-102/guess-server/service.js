@@ -15,7 +15,7 @@ function process ( guess, id ){
 
     if (!checkGuess(guess)){
         if (res.error) res.error+=' and guess not valid';
-        else res.error='guess not valid';
+        else res.error=guess+' is not a valid guess';
     }   
     
     res.seenGuess=guess;
@@ -50,7 +50,7 @@ function process ( guess, id ){
 }
 
 function checkGuess(guess){
-    if ( !guess || !guess.match(/[a-z]{5}/)) return false;
+    if ( !guess || !guess.match(/[A-Z]{5}/)) return false;
     return true;
 }
 

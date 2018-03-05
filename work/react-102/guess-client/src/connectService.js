@@ -9,6 +9,6 @@ export const submit = (guess, id) =>{
         method: 'POST',
         body: JSON.stringify( { guess : guess, id : id } )
     })
-    .then( response => response.ok ? response.json() : Promise.reject(response.text()) )
+    .then( response => response.json() )
     .catch( () => Promise.reject('connection-fail') );
 };

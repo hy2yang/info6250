@@ -12,7 +12,7 @@ class History extends Component {
         const list=this.state.history.map( (step, index) => {
             return (
                 <li key={index} className="attempt">
-                    {step.guess} ---- {step.match} matching letters 
+                    {step.seenGuess} ---- {step.match} matching letters 
                 </li>
             )
         });

@@ -138,4 +138,5 @@ flour choir blond burst wiley fibre daisy crude bored allah
 fares hoped safer marsh ricky theta stake arbor
 `.split(/ |\n/g).map( word => word.toUpperCase() );
 
+console.log(wordlist[246]);
 module.exports=wordlist;
