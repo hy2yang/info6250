@@ -1,4 +1,4 @@
-import wordlist from './wordlist';
+const wordlist = require('./wordlist');
 
 function getSecretId(){
     return Math.floor( Math.random() * wordlist.length );

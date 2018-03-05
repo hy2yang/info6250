@@ -1,5 +1,5 @@
-const wordlist = `
-about other which their there first would these click price
+const wordlist = 
+`about other which their there first would these click price
 state email world music after video where books links years
 order items group under games could great hotel store terms
 right local those using phone forum based black check index
@@ -136,6 +136,6 @@ badly scoop sanyo blink carlo tiles tamil fuzzy grams forge
 dense brave awful meyer wagon knock peers quilt notre mambo
 flour choir blond burst wiley fibre daisy crude bored allah
 fares hoped safer marsh ricky theta stake arbor
-`.split(/ |\n/g).map( word => word.toUpperCase() ).filter( word => word );
+`.split(/ |\n/g).map( word => word.toUpperCase() );
 
-export default wordlist;
+module.exports=wordlist;
