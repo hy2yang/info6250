@@ -6,7 +6,7 @@ function getSecretId(){
 
 function process ( guess, id ){
     guess=guess.toUpperCase();
-    let id=+id;
+    id=+id;
     let res = {};
 
     if (!checkId(id)){
@@ -18,8 +18,8 @@ function process ( guess, id ){
         else res.error='guess not valid';
     }   
     
-    res.guess=guess;
-    res.id=id;
+    res.seenGuess=guess;
+    res.seenId=id;
 
     if (res.error) return res;
 
@@ -50,7 +50,7 @@ function process ( guess, id ){
 }
 
 function checkGuess(guess){
-    if ( !guess || guess.length!==5) return false;
+    if ( !guess || !guess.match(/[a-z]{5}/)) return false;
     return true;
 }
 

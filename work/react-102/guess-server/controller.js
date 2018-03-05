@@ -18,7 +18,7 @@ app.get('/api',(req, res) => {
 app.post('/api',(req, res) => {
   const id = req.body.id;
   const guess = req.body.guess;
-  const result = service.calculate(guess, id);
+  const result = service.process(guess, id);
   if (result.error) {
     res.status(400).send( JSON.stringify(result) );
   }
