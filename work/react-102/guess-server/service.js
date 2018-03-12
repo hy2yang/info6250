@@ -1,7 +1,9 @@
 const wordlist = require('./wordlist');
 
 function getSecretId(){
-    return Math.floor( Math.random() * wordlist.length );
+    let id=Math.floor( Math.random() * wordlist.length );
+    console.log(wordlist[id]);
+    return id;
 }
 
 function process ( guess, id ){
@@ -9,23 +11,34 @@ function process ( guess, id ){
     id=+id;
     let res = {};
 
-    if (!checkId(id)){
-        res.error='id not valid';
-    }
-
-    if (!checkGuess(guess)){
-        if (res.error) res.error+=' and guess not valid';
-        else res.error=guess+' is not a valid guess';
-    }   
+    checkId(id, res);
+    checkGuess(guess, res);
     
     res.seenGuess=guess;
     res.seenId=id;
 
     if (res.error) return res;
+       
+    return count(guess, wordlist[id], res);
+}
 
-    const word=wordlist[id];
+function checkGuess(guess, res){
+    if ( !guess || !guess.match(/[A-Z]{5}/)) {
+        if (res.error) res.error+=' and guess not valid';
+        else res.error=guess+' is not a valid guess';
+    }
+    return res;
+}
+
+function checkId(id, res){
+    if ( +id<0 || +id>=wordlist.length ){
+        res.error='id not valid';
+    }
+    return res;
+}
+
+function count(guess, word, res){
     let count=0;
-
     res.won = (guess===word)? true:false;
     if (res.won){
         res.match=5;
@@ -47,16 +60,6 @@ function process ( guess, id ){
     }
     res.match=count;    
     return res;
-}
-
-function checkGuess(guess){
-    if ( !guess || !guess.match(/[A-Z]{5}/)) return false;
-    return true;
-}
-
-function checkId(id){
-    if ( +id<0 || +id>=wordlist.length ) return false;
-    return true;
 }
 
 function fullList(){
