@@ -25,9 +25,9 @@ function fetchJsonFrom(url, method) {
     return fetch(url, {
         method: method
         //headers: {currentId : currentId}
-    }).then(response => {
-        if (response.ok) return response.json();
-        return Promise.reject('error-response-not-okay');
+    }).then(response => response.ok ? response.json() : Promise.reject(response.status))
+    .catch((error) => {
+        return Promise.reject(error.toString());
     });
 }
 

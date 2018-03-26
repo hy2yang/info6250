@@ -7,7 +7,8 @@ function Control(props) {
     return (
         <div className="control">
             <div>
-                <button className="mighty-button" onClick={() => props.won? props.reset():props.start()}>
+                <button className="mighty-button" disabled={props.running&&!props.error} 
+                onClick={() => props.won? props.reset():props.start()}>
                 {text}
                 </button>
             </div>

@@ -14,9 +14,8 @@ class Guess extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            gameId : this.props.gameId,
             winner : "",
-            won: false,
+            running : false,
             round :0,
             alfredSecret:"",
             alfredID: -1,
@@ -34,6 +33,7 @@ class Guess extends Component {
     }
 
     async startGame(){
+        this.setState({running:true, error:null});
         await this.getSecrets();
     }
 
@@ -52,16 +52,10 @@ class Guess extends Component {
         }
     }
 
-    handleError(e){
+    handleError(e){        
         this.setState( {error: e} );
     }
-    /*
-    submitGuess(guess){
-        this.setState( {error:null} );
-        document.getElementsByClassName("user-guess")[0].value='';
-        submit(guess, this.state.secrectId).then(result => this.handleGuess(result)).catch(e => this.handleError(e));
-    }
-    */
+
     handleGuess(response){        
         if (!response.error){
             this.state.history.push(response);
@@ -73,18 +67,6 @@ class Guess extends Component {
         }         
     }
 
-    reset(){        
-        this.setState({
-            secrectId: null,
-            won: false,
-            round :0,
-            history : [],
-            error : null
-        });
-        this.fetchId();
-        console.log("the secret word id is "+this.state.secrectId);
-    }
-
     render(){ 
         const errorMessage=this.state.error? (<Message error={this.state.error} />) : null;
         const aSecret=this.state.alfredSecret? "Alfred's secret is "+this.state.alfredSecret:"Alfred haven't chosen a secret";
@@ -93,7 +75,8 @@ class Guess extends Component {
             <div className="game">
                 {errorMessage}
                 <Banner winner={this.state.winner}/>
-                <Control won={this.state.won} start={()=>this.startGame()} reset={()=>this.props.reset()}/>
+                <Control running={this.state.running} error={this.state.error? true:false}
+                start={()=>this.startGame()} reset={()=>this.props.reset()}/>
 
                 <div className="history">
                     <div id="alfred">
