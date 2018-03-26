@@ -39,7 +39,7 @@ class Guess extends Component {
 
     getSecrets(){
         for (let i in roles){
-            connection.fetchJsonFrom(roles[i]+'/game', 'post')
+            connection.fetchJsonFrom(roles[i]+'/game', 'post', {})
             .then(json => {
                 this.setState(
                     { 

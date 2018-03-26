@@ -21,10 +21,11 @@ function getUserList() {
     });
 }
 
-function fetchJsonFrom(url, method) {
+function fetchJsonFrom(url, method, bodydata) {
     return fetch(url, {
-        method: method
-        //headers: {currentId : currentId}
+        method: method,
+        //headers: JSON.stringify(headerObject),
+        body: JSON.stringify(bodydata)        
     }).then(response => response.ok ? response.json() : Promise.reject(response.status))
     .catch((error) => {
         return Promise.reject(error.toString());

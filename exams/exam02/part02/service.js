@@ -9,7 +9,8 @@ function getSecretWord() {
     const res = {};
     res.secret = random(wordlist);
     res.id = i;
-    games[i] = res;
+    games[i] = {};
+    games[i].secret = res.secret;
     games[i].candidates = wordlist;
     games[i].myGuess = [];
     games[i].matched = [];
