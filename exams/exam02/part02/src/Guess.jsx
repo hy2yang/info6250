@@ -158,7 +158,7 @@ class Guess extends Component {
                 <div className="history">
                     <div id="alfred">
                         <div>{aSecret}</div>
-                        <History steps={aGuessed} />
+                        <History steps={aGuessed} matched={aMatched}/>
                     </div>  
                     <div id="barbara"> 
                         <div>{bSecret}</div>
