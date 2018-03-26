@@ -32,8 +32,7 @@ function processGuess(guess, gameId) {
 function makeNextGuess(gameId, matched) {
     const lastGuess = games[gameId].myGuess[games[gameId].myGuess.length - 1];
     gameId = String(gameId);
-    matched = +matched;
-    adapt(gameId, matched, lastGuess);
+    if (matched && lastGuess) adapt(gameId, matched, lastGuess);
     const res = {};
     res.guess = makeGuess(gameId, lastGuess);
     return res;
@@ -72,7 +71,6 @@ function count(guess, word, res) {
 function common(word, guess) {
     let res = 0;
     const map = {};
-
     for (let i in word) {
         if (word[i] === guess[i])++res;
         else {
@@ -106,6 +104,8 @@ function makeGuess(gameId, lastGuess) {
 }
 
 function adapt(gameId, match, lastGuess) {
+    if (!match) return;
+    match=+match;
     games[gameId].matched.push(match);
     games[gameId].candidates = games[gameId].candidates.filter(word => common(word, lastGuess) === match && word !== lastGuess);
 }

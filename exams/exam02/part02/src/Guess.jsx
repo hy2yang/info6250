@@ -7,7 +7,7 @@ import Message from './Message'
 
 const connection = require('./connection');
 const roles = require('./config.json');
-
+const nameArray = Object.keys(roles);
 
 class Guess extends Component {
 
@@ -16,76 +16,153 @@ class Guess extends Component {
         this.state = {
             winner : "",
             running : false,
-            round :0,
-            alfredSecret:"",
-            alfredID: -1,
-            alfredHistory : [],
-            barbaraSecret :"",
-            barbaraID: -1,
-            barbaraHistory : [],
+            record : {},
+            guessed : {},
+            matched : {},
             error : null
-        };        
+        }; 
+        
+        this.reset = async function(){
+            await this.deleteGamesInServers();
+            this.props.reset();
+        }
                 
     }
 
     componentDidMount(){
-        //this.startGame();
+        //console.log(nameArray[0]);
     }
 
     async startGame(){
-        this.setState({running:true, error:null});
+        this.setState( {running:true, error:null} );
         await this.getSecrets();
+
+        let index = 0;
+        index = await this.alternate(index);
+        console.log(this.state);
+        index = await this.alternate(index);
+        console.log(this.state);
+        index = await this.alternate(index);
+        console.log(this.state);
+        index = await this.alternate(index);
+        console.log(this.state);
+        //while (!this.state.winner){
+            
+        //}
     }
 
-    getSecrets(){
-        for (let i in roles){
-            connection.fetchJsonFrom(roles[i]+'/game', 'post', {})
-            .then(json => {
-                this.setState(
-                    { 
-                        [i+'Secret'] : json.secret,
-                        [i+'ID'] : json.id,
-                    }
-                );
-            })
-            .catch(e => this.handleError(e));
+    async alternate(index){
+        const target = nameArray[index];
+        const myMatched = this.state.matched[target];
+        const lastmatch = {};
+        if (myMatched){
+            lastmatch.matched = myMatched[myMatched.length-1];
         }
+        const newGuess = await this.getGuess(index, lastmatch);
+        await this.checkGuess(1-index, newGuess);
+        return (1-index);
+    }
+
+    async getSecrets(){
+        const newRecord = Object.assign({}, this.state.record);
+        try {
+            for (let i in roles){
+                newRecord[i] = await connection.fetchJsonFrom(roles[i]+'/game', 'post', {});                
+            }
+            this.setState({record : newRecord},()=>console.log(this.state.record));            
+        }
+        catch(e){ 
+            this.handleError(e);
+        }
+    }
+
+    async getGuess(targetIndex, matched){
+        const target = nameArray[targetIndex];
+        const path = roles[target]+'/game/'+this.state.record[target].id+'/guessed';
+        
+        let newList, newGuess;
+        if (this.state.guessed[target]){
+            newList = this.state.guessed[target].slice(0);
+        }
+        else newList = [];
+
+        try {
+            newGuess = await connection.fetchJsonFrom(path, 'put', matched);
+            newList.push(newGuess.guess);
+            const newGuessed = Object.assign({ [target] : newList }, this.state.guessed);
+            this.setState({guessed : newGuessed});//,()=>console.log(this.state.guessed));            
+        }
+        catch(e){ 
+            this.handleError(e);
+        }
+        return newGuess;
+        
+    }
+
+    async checkGuess(targetIndex, guess){
+        const target = nameArray[targetIndex];
+        const opponent = nameArray[1-targetIndex];
+        const path = roles[target]+'/game/'+this.state.record[target].id+'/guess/'+guess;
+
+        let newList;
+        if (this.state.matched[opponent]){
+            newList = this.state.matched[opponent].slice(0);
+        }
+        else newList = [];
+        try{
+            const res = await connection.getJsonFrom(path);
+            newList.push(+res.matched);
+            const newMatched = Object.assign({ [opponent] : newList }, this.state.matched);
+            this.setState({
+                winner : res.hasWon? opponent:"",
+                running : res.hasWon? false:true,
+                matched : newMatched
+            });
+        }
+        catch(e){ 
+            this.handleError(e);
+        }       
+
+    }
+
+    async deleteGamesInServers(){
+        try {
+            for (let i in roles){
+                let path = roles[i]+'/game/'+this.state.record[i].id;
+                await connection.fetchJsonFrom(path, 'delete', {});                
+            }       
+        }
+        catch(e){ 
+            console.log(e);
+        }
+
     }
 
     handleError(e){        
         this.setState( {error: e} );
     }
 
-    handleGuess(response){        
-        if (!response.error){
-            this.state.history.push(response);
-            this.setState({round : this.state.round+1});
-            if (response.won) this.setState({ won: true});
-        }
-        else{
-            this.setState( {error: response.error} );
-        }         
-    }
-
     render(){ 
         const errorMessage=this.state.error? (<Message error={this.state.error} />) : null;
-        const aSecret=this.state.alfredSecret? "Alfred's secret is "+this.state.alfredSecret:"Alfred haven't chosen a secret";
-        const bSecret=this.state.barbaraSecret? "Barbara's secret is "+this.state.barbaraSecret:"Barbara haven't chosen a secret";
+        const aSecret=this.state.record['alfred']? "Alfred's secret is "+this.state.record['alfred'].secret:"Alfred haven't chosen a secret";
+        const bSecret=this.state.record['barbara']? "Barbara's secret is "+this.state.record['barbara'].secret:"Barbara haven't chosen a secret";
+        const aGuessed = this.state.guessed['alfred']? this.state.guessed['alfred']:[];
+        const aMatched = this.state.matched['alfred']? this.state.matched['alfred']:[];
         return (
             <div className="game">
                 {errorMessage}
                 <Banner winner={this.state.winner}/>
                 <Control running={this.state.running} error={this.state.error? true:false}
-                start={()=>this.startGame()} reset={()=>this.props.reset()}/>
+                start={()=>this.startGame()} reset={()=>this.reset()}/>
 
                 <div className="history">
                     <div id="alfred">
                         <div>{aSecret}</div>
-                        <History steps={this.state.alfredHistory} />
+                        <History steps={aGuessed} />
                     </div>  
                     <div id="barbara"> 
                         <div>{bSecret}</div>
-                        <History steps={this.state.barbaraHistory} /> 
+                        <History steps={this.state.guessed['barbara']? this.state.guessed['barbara']:[]} /> 
                     </div>
                 </div>
                 
