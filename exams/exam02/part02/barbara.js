@@ -4,6 +4,33 @@ const app = express();
 const PORT = 8888;
 const service = require('./service');
 
+app.use( bodyParser.json({ extended: true, type: '*/*' }) );
+
+app.post('/game',(req, res) => {
+    const result = service.getSecretWord();
+    res.send(JSON.stringify(result));
+});
+
+app.delete('/game/:ID',(req, res) => {
+    service.deleteGame(req.params.ID);
+    res.send('OK');
+});
+
+app.get('/game/:ID/guess/:GUESS',(req, res) => {
+    const id = req.params.ID;
+    const guess = req.params.GUESS;
+    const feedback =service.processGuess(guess, id);
+    if (feedback.error) res.status(400).send(JSON.stringify(feedback));
+    else res.send(JSON.stringify(feedback));
+});
+
+app.put('/game/:ID/guessed',(req, res) => {
+    const id = req.params.ID;
+    const matched = req.body.matched;
+    const feedback =service.makeNextGuess(id, matched);
+    res.send(JSON.stringify(feedback));
+});
+
 app.listen(PORT, () => {
     console.log(`Barbara listening at ${PORT}`);
     console.log('use Ctrl-C to stop this server');
