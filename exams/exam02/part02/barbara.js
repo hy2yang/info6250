@@ -6,6 +6,13 @@ const service = require('./service');
 
 app.use( bodyParser.json({ extended: true, type: '*/*' }) );
 
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', '*');
+    next();
+});
+
 app.post('/game',(req, res) => {
     const result = service.getSecretWord();
     res.send(JSON.stringify(result));

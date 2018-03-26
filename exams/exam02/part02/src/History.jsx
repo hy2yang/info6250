@@ -17,7 +17,7 @@ class History extends Component {
             )
         });
         return(
-            <div>            
+            <div className="list">            
                 <ol>{list}</ol>    
             </div>
         );

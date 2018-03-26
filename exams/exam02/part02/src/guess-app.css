@@ -4,6 +4,22 @@
     margin-bottom: 15px;
 }
 
+.history{    
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+/*
+#alfred{
+    width: 50%;
+    margin-right: 15%;
+}
+
+#barbara{
+    width: 50%;
+    margin-left: 15%;
+}
+ */
 ol {
     list-style-position: inside;
     padding-left: 0;

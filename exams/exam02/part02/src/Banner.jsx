@@ -3,16 +3,17 @@ import React, { Component } from 'react';
 class Banner extends Component {
     
     render(){
-        if (this.props.won){
-            return (
-                <h2 className="banner">
-                Congradulations! you have won!
-                </h2>
-            );
+        let text;
+        if (!this.props.winner){
+            text ='Welcome to word guess computer vs computer! Click button to start';
         }
+        else {
+           text ='Winner is '+this.props.winner+ '! Click button to reset';
+        }
+
         return (
             <h2 className="banner">
-                a secret word is chosen, input your guess (5 letters case insensitive) below
+            {text}
             </h2>
         );
     }

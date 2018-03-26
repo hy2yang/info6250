@@ -10,11 +10,11 @@
     "react-scripts": "1.1.1"
   },
   "scripts": {
-    "test2": "node alfred.js & node barbara.js",
+    "alfred": "node alfred.js",
+    "barbara": "node barbara.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  },
-  "proxy": "http://localhost:3001"
+  }
 }

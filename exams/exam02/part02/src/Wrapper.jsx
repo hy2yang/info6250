@@ -9,6 +9,7 @@ class Wrapper extends Component {
             gameNum : 0
         };       
     }
+    
     resetGame(){
         this.setState( {gameNum : this.state.gameNum+1} );
     }
@@ -16,7 +17,9 @@ class Wrapper extends Component {
     render () {
         //const ActiveGame = this.state.game;
         return (
-        <div className="wrapper" key={this.state.gameNum}><Guess reset={()=>this.resetGame()}/> </div>
+        <div className="wrapper" key={this.state.gameNum}>
+            <Guess gameId={this.state.gameNum} reset={()=>this.resetGame()}/> 
+        </div>
         );
     }
 
