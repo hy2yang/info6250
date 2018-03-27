@@ -6,21 +6,24 @@ const games = {};
 
 function getSecretWord() {
     let i = gameCount++;
-    const res = {};
-    res.secret = random(wordlist);
-    res.id = i;
-    games[i] = {};
-    games[i].secret = res.secret;
-    games[i].candidates = wordlist;
-    games[i].myGuess = [];
-    games[i].matched = [];
-    return res;
+    const secret = random(wordlist);
+    newGameRecord(i, secret);
+    return {secret : secret, id:i};
+}
+
+function newGameRecord(index, secret){
+    games[index] = {
+        secret : secret,
+        candidates : wordlist,
+        myGuess : [],
+        matched : []
+    };
 }
 
 function processGuess(guess, gameId) {
     guess = guess.toUpperCase();
     gameId = String(gameId);
-    let res = {};
+    const res = {};
     res.seenId = gameId;
     res.seenGuess = guess;
     checkId(gameId, res);
@@ -89,6 +92,9 @@ function common(word, guess) {
 }
 
 function makeGuess(gameId, lastGuess) {
+    if (games[gameId].candidates && games[gameId].candidates.length===1){
+        return games[gameId].candidates[0];
+    } 
     let temp;
     let min = 5;
     if (lastGuess) {                        // choose one with least common letters of last guess
@@ -109,7 +115,10 @@ function adapt(gameId, match, lastGuess) {
     if (!match) return;
     match=+match;
     games[gameId].matched.push(match);
-    games[gameId].candidates = games[gameId].candidates.filter(word => common(word, lastGuess) === match && word !== lastGuess);
+    games[gameId].candidates = games[gameId].candidates.filter(
+        word => (word !== lastGuess && common(word, lastGuess) === match)
+    );
+
 }
 
 function random(list) {

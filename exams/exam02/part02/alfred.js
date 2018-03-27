@@ -20,7 +20,7 @@ app.post('/game',(req, res) => {
 
 app.delete('/game/:ID',(req, res) => {
     service.deleteGame(req.params.ID);
-    res.send('OK');
+    res.send({seen:'id to delete: '+req.params.ID});
 });
 
 app.get('/game/:ID/guess/:GUESS',(req, res) => {
