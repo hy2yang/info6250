@@ -2,17 +2,19 @@ import React, { Component }from 'react';
 
 class History extends Component {
     
-    render(){  
+    render(){
         const list =[];
-        for (let i in this.props.steps){
-            list.push(
-                (
-                    <li key={i} className="attempt">
-                        {this.props.steps[i]} ---- {this.props.matched[i]} matching letters 
-                    </li>
-                )
-            );
-        }
+        if (this.props.steps && this.props.matched){
+            for (let i in this.props.matched){
+                list.push(
+                    (
+                        <li key={i} className="attempt">
+                            {this.props.steps[i]} ---- {this.props.matched[i]} matching letters 
+                        </li>
+                    )
+                );
+            }
+        }        
         
         return(
             <div className="list">            

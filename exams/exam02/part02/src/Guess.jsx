@@ -33,8 +33,7 @@ class Guess extends Component {
         this.setState( {running:true, error:null} );
         await this.getSecrets();
 
-        let index = 0;
-        
+        let index = 0;        
         while (!this.state.winner){
             index = await this.alternate(index);
             //console.log(this.state);
@@ -139,10 +138,7 @@ class Guess extends Component {
         const errorMessage=this.state.error? (<Message error={this.state.error} />) : null;
         const aSecret=this.state.record['alfred']? "Alfred's secret is "+this.state.record['alfred'].secret:"Alfred haven't chosen a secret";
         const bSecret=this.state.record['barbara']? "Barbara's secret is "+this.state.record['barbara'].secret:"Barbara haven't chosen a secret";
-        const aGuessed = this.state.guessed['alfred']? this.state.guessed['alfred']:[];
-        const aMatched = this.state.matched['alfred']? this.state.matched['alfred']:[];
-        const bGuessed = this.state.guessed['barbara']? this.state.guessed['barbara']:[];
-        const bMatched = this.state.matched['barbara']? this.state.matched['barbara']:[];
+        
         return (
             <div className="game">
                 {errorMessage}
@@ -153,11 +149,11 @@ class Guess extends Component {
                 <div className="history">
                     <div id="alfred">
                         <div>{aSecret}</div>
-                        <History steps={aGuessed} matched={aMatched}/>
+                        <History steps={this.state.guessed['alfred']} matched={this.state.matched['alfred']}/>
                     </div>  
                     <div id="barbara"> 
                         <div>{bSecret}</div>
-                        <History steps={bGuessed} matched={bMatched}/> 
+                        <History steps={this.state.guessed['barbara']} matched={this.state.matched['barbara']}/> 
                     </div>
                 </div>
                 
