@@ -14,6 +14,7 @@ class Guess extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            gameId : this.props.gameId, 
             winner : "",
             running : false,
             record : {},
@@ -38,17 +39,11 @@ class Guess extends Component {
         await this.getSecrets();
 
         let index = 0;
-        index = await this.alternate(index);
-        console.log(this.state);
-        index = await this.alternate(index);
-        console.log(this.state);
-        index = await this.alternate(index);
-        console.log(this.state);
-        index = await this.alternate(index);
-        console.log(this.state);
-        //while (!this.state.winner){
-            
-        //}
+        
+        while (!this.state.winner){
+            index = await this.alternate(index);
+            console.log(this.state);
+        }
     }
 
     async alternate(index){
@@ -89,13 +84,14 @@ class Guess extends Component {
         try {
             newGuess = await connection.fetchJsonFrom(path, 'put', matched);
             newList.push(newGuess.guess);
-            const newGuessed = Object.assign({ [target] : newList }, this.state.guessed);
+            const newGuessed = Object.assign({}, this.state.guessed);
+            newGuessed[target] = newList;
             this.setState({guessed : newGuessed});//,()=>console.log(this.state.guessed));            
         }
         catch(e){ 
             this.handleError(e);
         }
-        return newGuess;
+        return newGuess.guess;
         
     }
 
@@ -112,7 +108,8 @@ class Guess extends Component {
         try{
             const res = await connection.getJsonFrom(path);
             newList.push(+res.matched);
-            const newMatched = Object.assign({ [opponent] : newList }, this.state.matched);
+            const newMatched = Object.assign({}, this.state.matched);
+            newMatched[opponent]=newList;
             this.setState({
                 winner : res.hasWon? opponent:"",
                 running : res.hasWon? false:true,
