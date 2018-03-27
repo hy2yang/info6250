@@ -147,11 +147,11 @@ class Guess extends Component {
                 start={()=>this.startGame()} reset={()=>this.reset()} won={this.state.winner? true:false}/>
 
                 <div className="history">
-                    <div id="alfred">
+                    <div className="list" id="alfred">
                         <div>{aSecret}</div>
                         <History steps={this.state.guessed['alfred']} matched={this.state.matched['alfred']}/>
                     </div>  
-                    <div id="barbara"> 
+                    <div className="list" id="barbara"> 
                         <div>{bSecret}</div>
                         <History steps={this.state.guessed['barbara']} matched={this.state.matched['barbara']}/> 
                     </div>

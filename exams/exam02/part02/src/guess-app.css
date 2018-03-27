@@ -9,6 +9,19 @@
     flex-flow: row wrap;
     justify-content: space-around;
 }
+
+.banner{
+    height: 100px;
+}
+
+.mighty-button{
+    width: 90px;
+}
+
+.list{
+    align-content: flex-start;
+}
+
 /*
 #alfred{
     width: 50%;
