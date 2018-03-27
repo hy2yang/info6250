@@ -42,7 +42,7 @@ class Guess extends Component {
         
         while (!this.state.winner){
             index = await this.alternate(index);
-            console.log(this.state);
+            //console.log(this.state);
         }
     }
 
@@ -53,6 +53,7 @@ class Guess extends Component {
         if (myMatched){
             lastmatch.matched = myMatched[myMatched.length-1];
         }
+        //console.log(lastmatch);
         const newGuess = await this.getGuess(index, lastmatch);
         await this.checkGuess(1-index, newGuess);
         return (1-index);

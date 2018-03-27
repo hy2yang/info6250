@@ -30,11 +30,13 @@ function processGuess(guess, gameId) {
 }
 
 function makeNextGuess(gameId, matched) {
+    games[gameId].matched.push(+matched);
     const lastGuess = games[gameId].myGuess[games[gameId].myGuess.length - 1];
     gameId = String(gameId);
     if (matched && lastGuess) adapt(gameId, matched, lastGuess);
     const res = {};
     res.guess = makeGuess(gameId, lastGuess);
+    games[gameId].myGuess.push(res.guess);
     return res;
 }
 
