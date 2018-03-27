@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const PORT = 8888;
-const service = require('./service');
+const service = Object.assign({}, require('./Service'));
 
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');

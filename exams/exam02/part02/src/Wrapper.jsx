@@ -15,10 +15,9 @@ class Wrapper extends Component {
     }
 
     render () {
-        //const ActiveGame = this.state.game;
         return (
         <div className="wrapper" key={this.state.gameNum}>
-            <Guess gameId={this.state.gameNum} reset={()=>this.resetGame()}/> 
+            <Guess reset={()=>this.resetGame()}/> 
         </div>
         );
     }

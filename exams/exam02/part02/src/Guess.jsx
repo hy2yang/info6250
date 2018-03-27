@@ -14,7 +14,6 @@ class Guess extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            gameId : this.props.gameId, 
             winner : "",
             running : false,
             record : {},
@@ -28,10 +27,6 @@ class Guess extends Component {
             this.props.reset();
         }
                 
-    }
-
-    componentDidMount(){
-        //console.log(nameArray[0]);
     }
 
     async startGame(){
@@ -65,7 +60,7 @@ class Guess extends Component {
             for (let i in roles){
                 newRecord[i] = await connection.fetchJsonFrom(roles[i]+'/game', 'post', {});                
             }
-            this.setState({record : newRecord},()=>console.log(this.state.record));            
+            this.setState({record : newRecord});            
         }
         catch(e){ 
             this.handleError(e);
@@ -146,12 +141,14 @@ class Guess extends Component {
         const bSecret=this.state.record['barbara']? "Barbara's secret is "+this.state.record['barbara'].secret:"Barbara haven't chosen a secret";
         const aGuessed = this.state.guessed['alfred']? this.state.guessed['alfred']:[];
         const aMatched = this.state.matched['alfred']? this.state.matched['alfred']:[];
+        const bGuessed = this.state.guessed['barbara']? this.state.guessed['barbara']:[];
+        const bMatched = this.state.matched['barbara']? this.state.matched['barbara']:[];
         return (
             <div className="game">
                 {errorMessage}
                 <Banner winner={this.state.winner}/>
                 <Control running={this.state.running} error={this.state.error? true:false}
-                start={()=>this.startGame()} reset={()=>this.reset()}/>
+                start={()=>this.startGame()} reset={()=>this.reset()} won={this.state.winner? true:false}/>
 
                 <div className="history">
                     <div id="alfred">
@@ -160,7 +157,7 @@ class Guess extends Component {
                     </div>  
                     <div id="barbara"> 
                         <div>{bSecret}</div>
-                        <History steps={this.state.guessed['barbara']? this.state.guessed['barbara']:[]} /> 
+                        <History steps={bGuessed} matched={bMatched}/> 
                     </div>
                 </div>
                 
