@@ -1,0 +1,39 @@
+* {
+    text-align: center;
+    margin-top:15px;
+    margin-bottom: 15px;
+}
+
+.history{    
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+.banner{
+    height: 100px;
+}
+
+.mighty-button{
+    width: 90px;
+}
+
+.list{
+    align-content: flex-start;
+}
+
+/*
+#alfred{
+    width: 50%;
+    margin-right: 15%;
+}
+
+#barbara{
+    width: 50%;
+    margin-left: 15%;
+}
+ */
+ol {
+    list-style-position: inside;
+    padding-left: 0;
+}
