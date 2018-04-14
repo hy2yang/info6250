@@ -1,0 +1,1 @@
+module.exports = (obj,proto)=> Object.setPrototypeOf(obj,proto);
